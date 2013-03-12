@@ -1,0 +1,30 @@
+# Maintainer: Simon Gomizelj <simongmzlj@gmail.com>
+
+pkgname=lightd-git
+pkgver=0.0.1.58.g1642957
+pkgrel=1
+pkgdesc="A set of utility applications for working with the backlight"
+arch=('i686' 'x86_64')
+url="http://github.com/vodik/backlight-utils"
+license=('GPL')
+depends=()
+makedepends=('git')
+conflicts=('lightd')
+provides=('lightd')
+source=('git://github.com/vodik/backlight-utils.git')
+sha1sums=('SKIP')
+
+pkgver() {
+  cd "backlight-utils"
+  git describe | sed 's/^v//;s/-/./g'
+}
+
+build() {
+  make -C "backlight-utils"
+}
+
+package() {
+  make -C "backlight-utils" DESTDIR="$pkgdir" install
+}
+
+# vim: ft=sh syn=sh et

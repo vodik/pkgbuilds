@@ -1,0 +1,26 @@
+# Maintainer: Dave Reisner <d@falconindy.com>
+
+pkgname=ponymix-git
+pkgver=20121221
+pkgrel=1
+pkgdesc="CLI PulseAudio Volume Control"
+arch=('i686' 'x86_64')
+url="http://github.com/falconindy/ponymix"
+license=('MIT')
+depends=('pulseaudio')
+makedepends=('git')
+conflicts=('ponymix' 'pulsemix-git')
+provides=('ponymix' 'pulsemix-git')
+replaces=('pulsemix-git')
+source=('git://github.com/falconindy/ponymix.git')
+sha1sums=('SKIP')
+
+build() {
+  make -C "ponymix"
+}
+
+package() {
+  make -C "ponymix" DESTDIR="$pkgdir" install
+}
+
+# vim: ft=sh syn=sh et
