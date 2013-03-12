@@ -11,7 +11,7 @@ depends=()
 makedepends=('git')
 conflicts=('lightd')
 provides=('lightd')
-source=('git://github.com/vodik/backlight-utils.git')
+source=('git://github.com/vodik/lightd.git')
 sha1sums=('SKIP')
 
 pkgver() {
