@@ -116,9 +116,9 @@ check_updates() {
 	done
 }
 
-for i in *; do
-	[[ ! -d "$i" ]] && continue
-	[[ ! -f "$i/PKGBUILD" ]] && continue
-	msg "Checking $i..."
-	check_updates "$i"
+for dir in *; do
+	[[ ! -d "$dir" ]] && continue
+	[[ ! -f "$dir/PKGBUILD" ]] && continue
+	msg "Checking $dir..."
+	check_updates "$dir"
 done
