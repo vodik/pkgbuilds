@@ -117,7 +117,8 @@ check_updates() {
 }
 
 for i in *; do
-	[[ ! -d $i ]] && continue
+	[[ ! -d "$i" ]] && continue
+	[[ ! -f "$i/PKGBUILD" ]] && continue
 	msg "Checking $i..."
 	check_updates "$i"
 done
