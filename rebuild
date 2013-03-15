@@ -1,0 +1,123 @@
+#!/bin/bash
+
+ALL_OFF="$(tput sgr0)"
+BOLD="$(tput bold)"
+BLUE="${BOLD}$(tput setaf 4)"
+GREEN="${BOLD}$(tput setaf 2)"
+RED="${BOLD}$(tput setaf 1)"
+YELLOW="${BOLD}$(tput setaf 3)"
+
+msg() {
+	local mesg=$1; shift
+	printf "${GREEN}==>${ALL_OFF}${BOLD} ${mesg}${ALL_OFF}\n" "$*" >&2
+}
+
+msg2() {
+	local mesg=$1; shift
+	printf "${BLUE}  ->${ALL_OFF}${BOLD} ${mesg}${ALL_OFF}\n" "$@" >&2
+}
+
+confirm() {
+	local -l reply # convert to lowercase on assignment
+	local msg=${1:-Continue?}
+
+	# make sure stdin is a terminal
+	if [[ ! -t 0 ]]; then
+		exec </dev/tty
+	fi
+
+	# actually print the prompt, return according to response
+	read -p "${BOLD}$msg${ALL_OFF} [Y/n] " reply >/dev/tty
+	[[ -z $reply || $reply = y?(es) ]]
+}
+
+# extract the protocol from a source entry - return "local" for local sources
+get_protocol() {
+	if [[ $1 = *://* ]]; then
+		# strip leading filename
+		local proto="${1##*::}"
+		printf "%s\n" "${proto%%://*}"
+	else
+		printf "%s\n" local
+	fi
+}
+
+# extract the filename from a source entry
+get_filename() {
+	local netfile=$1
+
+	# if a filename is specified, use it
+	if [[ $netfile = *::* ]]; then
+		printf "%s\n" ${netfile%%::*}
+		return
+	fi
+
+	local proto=$(get_protocol "$netfile")
+
+	case $proto in
+		bzr*|git*|hg*|svn*)
+			filename=${netfile%%#*}
+			filename=${filename%/}
+			filename=${filename##*/}
+			if [[ $proto = git* ]]; then
+				filename=${filename%%.git*}
+			fi
+			;;
+		*)
+			# if it is just an URL, we only keep the last component
+			filename="${netfile##*/}"
+			;;
+	esac
+	printf "%s\n" "${filename}"
+}
+
+update_repo() {
+	git fetch >/dev/null
+	git rev-list HEAD...origin/$1 --count
+}
+
+show_log() {
+	git log --oneline --decorate --graph origin/$1
+}
+
+update() {
+	local package="$1"
+	local source="$2"
+	local proto=$(get_protocol "$source")
+
+	case $proto in
+	git*)
+		local repo=$(get_filename "$source")
+		local fragment=${source#*#}
+		local branch="master"
+
+		if [[ "$fragment" != "$source" && ${fragment%%=*} == "branch" ]]; then
+			branch=${fragment##*=}
+		fi
+
+		(cd "$package/$repo" && git fetch --all >/dev/null)
+		local commits=$(cd "$package/src/$repo" && update_repo $branch)
+
+		if (( commits > 0 )); then
+			msg2 "$package is $commits commits behind origin/$branch"
+			confirm "View git log?"    && (cd "$package/src/$repo" && show_log $branch)
+			confirm "Rebuild package?" && (cd "$package" && makepkg)
+		fi
+		;;
+	esac
+}
+
+check_updates() {
+	local package="$1"
+	local sources=($(source "$package/PKGBUILD"; echo $source))
+
+	for source in ${sources[@]}; do
+		update "$package" "$source"
+	done
+}
+
+for i in *; do
+	[[ ! -d $i ]] && continue
+	msg "Checking $i..."
+	check_updates "$i"
+done
