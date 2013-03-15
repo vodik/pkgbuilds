@@ -1,5 +1,7 @@
 #!/bin/bash
 
+FLAGS="$*"
+
 ALL_OFF="$(tput sgr0)"
 BOLD="$(tput bold)"
 BLUE="${BOLD}$(tput setaf 4)"
@@ -101,7 +103,7 @@ update() {
 		if (( commits > 0 )); then
 			msg2 "$package is $commits commits behind origin/$branch"
 			confirm "View git log?"    && (cd "$package/src/$repo" && show_log $branch)
-			confirm "Rebuild package?" && (cd "$package" && makepkg)
+			confirm "Rebuild package?" && (cd "$package" && makepkg $FLAGS)
 		fi
 		;;
 	esac
