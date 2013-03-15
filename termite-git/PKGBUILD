@@ -1,7 +1,7 @@
 # Maintainer: Daniel Micay <danielmicay@gmail.com>
 
 pkgname=termite-git
-pkgver=6.3.ga3b33d4
+pkgver=6.4.g1b32c0a
 pkgrel=1
 pkgdesc="A simple VTE-based terminal"
 arch=('i686' 'x86_64')
@@ -22,7 +22,14 @@ pkgver() {
 }
 
 build() {
-  make -C "termite"
+  cd "termite"
+
+  # workaround for submodules
+  git submodule init
+  git config submodule.qux/util.url "$srcdir/termite-module-util"
+  git submodule update
+
+  make
 }
 
 package() {
