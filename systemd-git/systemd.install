@@ -1,0 +1,57 @@
+#!/bin/sh
+
+sd_booted() {
+  [ -e sys/fs/cgroup/systemd ]
+}
+
+add_privs() {
+  if ! setcap "$2" "$1" 2>/dev/null; then
+    echo "==> Warning: setcap failed, falling back to setuid root on /$1"
+    chmod u+s "$1"
+  fi
+}
+
+mask_net_naming() {
+  if [ ! -e etc/udev/rules.d/80-net-name-slot.rules ]; then
+    printf >etc/udev/rules.d/80-net-name-slot.rules '# %s\n' \
+      "This file masks persistent renaming rules for network devices. If you" \
+      "delete this file, /usr/lib/udev/rules.d/80-net-name-slot.rules will" \
+      "rename network devices according to ID_NET_NAME_{ONBOARD,SLOT,PATH}" \
+      "attributes of your network devices, with priority in that order. See" \
+      "the output of 'udevadm info /sys/class/net/\$interface' for details" \
+      "on what that persistent name might be."
+  fi
+}
+
+post_common() {
+  systemd-machine-id-setup
+
+  add_privs usr/bin/systemd-detect-virt 'cap_dac_override,cap_sys_ptrace+ep'
+
+  udevadm hwdb --update
+  journalctl --update-catalog
+
+  if sd_booted; then
+    systemctl --system daemon-reexec
+  fi
+}
+
+post_install() {
+  post_common
+
+  # enable getty@tty1 by default, but don't track the file
+  systemctl enable getty@.service
+
+  echo ":: Append 'init=/bin/systemd' to your kernel command line in your"
+  echo "   bootloader to replace sysvinit with systemd"
+}
+
+post_upgrade() {
+  post_common
+
+  if [ "$(vercmp 20130106-2 "$2")" -eq 1 ]; then
+    mask_net_naming
+  fi
+}
+
+# vim:set ts=2 sw=2 et:
