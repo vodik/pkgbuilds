@@ -126,7 +126,7 @@ else
 	for dir in *; do
 		[[ ! -d "$dir" ]] && continue
 		[[ ! -f "$dir/PKGBUILD" ]] && continue
-		msg "Checking ${package}..."
+		msg "Checking ${dir}..."
 		check_updates "$dir"
 	done
 fi
