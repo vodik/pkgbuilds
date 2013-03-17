@@ -83,16 +83,16 @@ show_log() {
 
 update() {
 	local package="$1"
-	local source="$2"
-	local proto=$(get_protocol "$source")
+	local netfile="$2"
+	local proto=$(get_protocol "$netfile")
 
 	case $proto in
 	git*)
-		local repo=$(get_filename "$source")
-		local fragment=${source#*#}
+		local repo=$(get_filename "$netfile")
+		local fragment=${netfile#*#}
 		local branch="master"
 
-		if [[ "$fragment" != "$source" && ${fragment%%=*} == "branch" ]]; then
+		if [[ "$fragment" != "$netfile" && ${fragment%%=*} == "branch" ]]; then
 			branch=${fragment##*=}
 		fi
 
