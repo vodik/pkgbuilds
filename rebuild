@@ -6,17 +6,16 @@ ALL_OFF="$(tput sgr0)"
 BOLD="$(tput bold)"
 BLUE="${BOLD}$(tput setaf 4)"
 GREEN="${BOLD}$(tput setaf 2)"
-RED="${BOLD}$(tput setaf 1)"
-YELLOW="${BOLD}$(tput setaf 3)"
+WHITE="${BOLD}$(tput setaf 7)"
 
 msg() {
 	local mesg=$1; shift
-	printf "${GREEN}==>${ALL_OFF}${BOLD} ${mesg}${ALL_OFF}\n" "$*" >&2
+	printf "${GREEN}==> ${WHITE}${mesg}${ALL_OFF}\n" "$*" >&2
 }
 
 msg2() {
 	local mesg=$1; shift
-	printf "${BLUE}  ->${ALL_OFF}${BOLD} ${mesg}${ALL_OFF}\n" "$@" >&2
+	printf "${BLUE}  -> ${WHITE}${mesg}${ALL_OFF}\n" "$@" >&2
 }
 
 confirm() {
@@ -29,7 +28,7 @@ confirm() {
 	fi
 
 	# actually print the prompt, return according to response
-	read -p "${BOLD}$msg${ALL_OFF} [Y/n] " reply >/dev/tty
+	read -p "${BLUE}:: ${WHITE}$msg${ALL_OFF} [Y/n] " reply >/dev/tty
 	[[ -z $reply || $reply = y?(es) ]]
 }
 
