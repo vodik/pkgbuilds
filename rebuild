@@ -117,9 +117,16 @@ check_updates() {
 	done
 }
 
-for dir in *; do
-	[[ ! -d "$dir" ]] && continue
-	[[ ! -f "$dir/PKGBUILD" ]] && continue
-	msg "Checking $dir..."
-	check_updates "$dir"
-done
+# PROGRAM START
+
+if [[ -f "PKGBUILD" ]]; then
+	msg "Checking ${PWD##*/}..."
+	check_updates .
+else
+	for dir in *; do
+		[[ ! -d "$dir" ]] && continue
+		[[ ! -f "$dir/PKGBUILD" ]] && continue
+		msg "Checking ${package}..."
+		check_updates "$dir"
+	done
+fi
