@@ -5,15 +5,15 @@
 # Contributor: Simon Gomizelj <simongmzlj at gmail com>
 
 pkgname=weechat-git
-pkgver=0.4.0.104.g3fb1235
+pkgver=0.4.0.115.gbbd080e
 pkgrel=1
 pkgdesc="Fast, light & extensible IRC client (curses UI)"
 arch=('i686' 'x86_64')
 url="http://www.weechat.org/"
 license=('GPL3')
 depends=('gnutls')
-makedepends=('git' 'cmake' 'pkgconfig' 'perl' 'python2' 'lua' 'tcl' 'ruby' 'aspell' 'curl')
-optdepends=('perl' 'python2' 'lua' 'tcl' 'ruby' 'aspell')
+makedepends=('git' 'cmake' 'pkgconfig' 'perl' 'python2' 'aspell' 'curl')
+optdepends=('perl' 'python2' 'aspell')
 provides=('weechat')
 conflicts=('weechat')
 options=(!libtool)
@@ -29,7 +29,10 @@ build() {
   cd "weechat"
   cmake -DPREFIX=/usr \
         -DPYTHON_EXECUTABLE=/usr/bin/python2 \
-        -DPYTHON_LIBRARY=/usr/lib/libpython2.7.so
+        -DPYTHON_LIBRARY=/usr/lib/libpython2.7.so \
+        -DENABLE_RUBY=OFF \
+        -DENABLE_LUA=OFF \
+        -DENABLE_TCL=OFF
 }
 
 package() {
