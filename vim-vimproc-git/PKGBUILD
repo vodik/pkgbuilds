@@ -1,9 +1,7 @@
-# See http://wiki.archlinux.org/index.php/VCS_PKGBUILD_Guidelines
-# for more information on packaging from GIT sources.
-
 # Maintainer: anergy <anergy.25110321@gmail.com>
+
 pkgname=vim-vimproc-git
-pkgver=20120329
+pkgver=7.0.76.ge13495c
 pkgrel=1
 pkgdesc="interactive command execution in vim"
 arch=(i686 x86_64)
@@ -18,8 +16,10 @@ source=('git://github.com/Shougo/vimproc.git')
 sha1sums=('SKIP')
 install=vimdoc.install
 
-_gitroot=https://github.com/Shougo/vimproc.git
-_gitname=vimproc
+pkgver() {
+  cd "vimproc"
+  git describe --tags | sed 's/^ver\.//;s/-/./g'
+}
 
 build() {
   make -C "vimproc" -f make_unix.mak
@@ -27,10 +27,9 @@ build() {
 
 package() {
   cd "vimproc"
-  for f in autoload/vimproc_unix.so autoload/vimproc.vim autoload/vimproc/* \
-           doc/* plugin/* ; do
-    install -D $f ${pkgdir}/usr/share/vim/vimfiles/$f
-  done
+  mkdir -p "$pkgdir/usr/share/vim/vimfiles/autoload"
+  cp -a autoload/vimproc* "$pkgdir/usr/share/vim/vimfiles/autoload"
+  cp -a doc plugin "$pkgdir/usr/share/vim/vimfiles"
 }
 
 # vim:set ts=2 sw=2 et:
