@@ -1,7 +1,7 @@
 # Maintainer: Daniel Micay <danielmicay@gmail.com>
 
 pkgname=kmscon-git
-pkgver=20130303
+pkgver=7.42.g4e0b981
 pkgrel=1
 pkgdesc='Terminal emulator based on Kernel Mode Setting (KMS)'
 arch=('i686' 'x86_64')
@@ -14,6 +14,11 @@ provides=('kmscon')
 conflicts=('kmscon')
 source=('git://github.com/dvdhrm/kmscon.git')
 sha1sums=('SKIP')
+
+pkgver() {
+  cd "kmscon"
+  git describe | sed 's/^kmscon-//;s/-/./g'
+}
 
 build() {
   cd "kmscon"
