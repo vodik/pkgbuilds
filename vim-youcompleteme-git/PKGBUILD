@@ -12,8 +12,9 @@ depends=(vim clang)
 makedepends=(git cmake)
 provides=(vim-youcompleteme)
 conflicts=(vim-youcompleteme)
-source=('git://github.com/Valloric/YouCompleteMe.git')
-sha1sums=('SKIP')
+source=('git://github.com/Valloric/YouCompleteMe.git'
+        'git://github.com/davidhalter/jedi.git')
+sha1sums=('SKIP' 'SKIP')
 install=vimdoc.install
 
 build() {
@@ -23,8 +24,12 @@ build() {
 }
 
 package() {
-  cd "YouCompleteMe"
   mkdir -p "$pkgdir/usr/share/vim/vimfiles"
+
+  cd "$srcdir/YouCompleteMe"
   cp -a autoload doc plugin python "$pkgdir/usr/share/vim/vimfiles"
   ln -sf /usr/lib/llvm/libclang.so "$pkgdir/usr/share/vim/vimfiles/python/"
+
+  cd "$srcdir/jedi"
+  cp -a jedi "$pkgdir/usr/share/vim/vimfiles/python/completers/python/jedi/"
 }
