@@ -11,7 +11,7 @@ depends=('curl' 'libarchive' 'pacman' 'yajl' )
 makedepends=('git' 'perl')
 conflicts=('cower')
 provides=('cower')
-source=('git://github.com/falconindy/cower#branch=pacman41')
+source=('git://github.com/falconindy/cower')
 sha1sums=('SKIP')
 
 pkgver() {
