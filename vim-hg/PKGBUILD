@@ -1,0 +1,107 @@
+pkgname=vim-hg
+pkgver=7.3.875.1.acf7368a2acc
+_vimver="${pkgver:0:3}"
+pkgrel=1
+pkgdesc='Vi Improved, a highly configurable, improved version of the vi text editor'
+arch=('i686' 'x86_64')
+license=('custom:vim')
+url="http://www.vim.org"
+depends=('gpm' 'python' 'python2' 'libxt' 'desktop-file-utils' 'gtk2')
+makedepends=('gpm' 'python' 'python2' 'libxt' 'desktop-file-utils' 'gtk2')
+conflicts=('vim' 'vim-runtime' 'gvim')
+provides=("vim=$_vimver" "vim-runtime=$_vimver" "gvim=$_vimver")
+source=('hg+http://vim.googlecode.com/hg/vim'
+        'vimrc'
+        'gvim.desktop'
+        'archlinux.vim')
+md5sums=('SKIP'
+         '20fceda56badf201695c57999b0bc609'
+         'd90413bd21f400313a785bb4010120cd'
+         '10353a61aadc3f276692d0e17db1478e')
+backup=('etc/vimrc')
+
+pkgver() {
+  cd "vim"
+  hg log -r . --template '{latesttag}-{latesttagdistance}-{node|short}\n' | \
+    sed 's/^v//;s/-/./g'
+}
+
+build() {
+  cd "vim"
+
+  # define the place for the global (g)vimrc file (set to /etc/vimrc)
+  sed -i 's|^.*\(#define SYS_.*VIMRC_FILE.*"\) .*$|\1|' \
+    src/feature.h
+  sed -i 's|^.*\(#define VIMRC_FILE.*"\) .*$|\1|' \
+    src/feature.h
+
+  cd "src"
+
+  autoconf
+  ./configure \
+    --prefix=/usr \
+    --localstatedir=/var/lib/vim \
+    --with-features=huge \
+    --with-compiledby=ArchLinux \
+    --enable-gpm \
+    --enable-acl \
+    --with-x=yes \
+    --enable-gui=gtk2 \
+    --enable-multibyte \
+    --disable-cscope \
+    --disable-netbeans \
+    --disable-perlinterp \
+    --enable-pythoninterp \
+    --enable-python3interp \
+    --disable-rubyinterp \
+    --disable-luainterp
+
+  make
+}
+
+package() {
+  make -C "vim" VIMRCLOC="/etc" DESTDIR="$pkgdir" install
+
+  _vimver="vim${_vimver/./}"
+
+  # provided by (n)vi in core
+  rm "$pkgdir/usr/bin/ex"
+  rm "$pkgdir/usr/bin/view"
+
+  # delete some manpages
+  find "$pkgdir/usr/share/man" -type d -name 'man1' 2>/dev/null | \
+    while read mandir; do
+      (cd $mandir && rm -f ex.1 view.1)
+    done
+
+  # fix FS#17216
+  sed -i 's|messages,/var|messages,/var/log/messages.log,/var|' \
+    ${pkgdir}/usr/share/vim/$_vimver/filetype.vim
+
+  # patch filetype.vim for better handling of pacman related files
+  sed -i "s/rpmsave/pacsave/;s/rpmnew/pacnew/;s/,\*\.ebuild/\0,PKGBUILD*,*.install/" \
+    "$pkgdir/usr/share/vim/$_vimver/filetype.vim"
+  sed -i "/find the end/,+3{s/changelog_date_entry_search/changelog_date_end_entry_search/}" \
+    "$pkgdir/usr/share/vim/$_vimver/ftplugin/changelog.vim"
+
+  # rc files
+  install -Dm644 "$srcdir/vimrc" "$pkgdir/etc/vimrc"
+  install -Dm644 "$srcdir/archlinux.vim" \
+    "$pkgdir/usr/share/vim/vimfiles/archlinux.vim"
+
+  # rgb.txt file
+  install -Dm644 "$srcdir/vim/runtime/rgb.txt" \
+    "$pkgdir/usr/share/vim/$_vimver/rgb.txt"
+
+  # freedesktop links
+  install -Dm644 "$srcdir/gvim.desktop" \
+    "$pkgdir/usr/share/applications/gvim.desktop"
+  install -Dm644 "$srcdir/vim/runtime/vim48x48.png" \
+    "$pkgdir/usr/share/pixmaps/gvim.png"
+
+  # license
+  install -Dm755 "$srcdir/vim/runtime/doc/uganda.txt" \
+    "$pkgdir/usr/share/licenses/$pkgname/license.txt"
+}
+
+# vim:set ts=2 sw=2 et:
