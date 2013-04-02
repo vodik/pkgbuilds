@@ -1,7 +1,7 @@
 # Maintainer: anergy <anergy.25110321@gmail.com>
 
 pkgname=vim-vimproc-git
-pkgver=7.0.76.ge13495c
+pkgver=7.0.84.g4579e6a
 pkgrel=1
 pkgdesc="interactive command execution in vim"
 arch=(i686 x86_64)

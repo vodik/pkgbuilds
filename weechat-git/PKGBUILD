@@ -5,7 +5,7 @@
 # Contributor: Simon Gomizelj <simongmzlj at gmail com>
 
 pkgname=weechat-git
-pkgver=0.4.0.118.g19acf81
+pkgver=0.4.0.136.gaa10e20
 pkgrel=1
 pkgdesc="Fast, light & extensible IRC client (curses UI)"
 arch=('i686' 'x86_64')
