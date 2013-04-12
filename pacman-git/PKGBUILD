@@ -5,8 +5,13 @@
 
 pkgname=pacman-git
 pkgver=4.1.0
+pkgver() {
+  cd pacman
+  git describe | sed 's/^v//;s/-/./g'
+}
 pkgrel=1
 pkgdesc="A library-based package manager with dependency support. git version."
+
 arch=('i686' 'x86_64')
 url="http://www.archlinux.org/pacman/"
 license=('GPL')
@@ -17,15 +22,10 @@ checkdepends=('python2')
 provides=("pacman=$pkgver" 'pacman-contrib' 'libalpm.so')
 conflicts=('pacman' 'pacman-contrib')
 options=('!libtool' '!strip')
-backup=(etc/pacman.conf
-        etc/makepkg.conf)
-source=(git://projects.archlinux.org/pacman.git)
+backup=('etc/pacman.conf'
+        'etc/makepkg.conf')
+source=('git+git://projects.archlinux.org/pacman.git')
 sha1sums=('SKIP')
-
-pkgver() {
-  cd pacman
-  git describe | sed 's/^v//;s/-/./g'
-}
 
 build() {
   cd "pacman"

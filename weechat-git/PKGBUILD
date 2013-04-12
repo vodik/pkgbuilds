@@ -6,8 +6,13 @@
 
 pkgname=weechat-git
 pkgver=0.4.0.136.gaa10e20
+pkgver() {
+  cd "weechat"
+  git describe | sed 's/^v//;s/-/./g'
+}
 pkgrel=1
 pkgdesc="Fast, light & extensible IRC client (curses UI)"
+
 arch=('i686' 'x86_64')
 url="http://www.weechat.org/"
 license=('GPL3')
@@ -17,13 +22,8 @@ optdepends=('perl' 'python2' 'aspell')
 provides=('weechat')
 conflicts=('weechat')
 options=(!libtool)
-source=('git://git.sv.gnu.org/weechat.git')
+source=('git+git://git.sv.gnu.org/weechat.git')
 sha1sums=('SKIP')
-
-pkgver() {
-  cd "weechat"
-  git describe | sed 's/^v//;s/-/./g'
-}
 
 build() {
   cd "weechat"

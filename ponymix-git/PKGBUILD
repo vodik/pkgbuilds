@@ -2,8 +2,13 @@
 
 pkgname=ponymix-git
 pkgver=20121221
+pkgver() {
+  cd "ponymix"
+  git describe | sed 's/^v//;s/-/./g'
+}
 pkgrel=1
 pkgdesc="CLI PulseAudio Volume Control"
+
 arch=('i686' 'x86_64')
 url="http://github.com/falconindy/ponymix"
 license=('MIT')
@@ -12,7 +17,7 @@ makedepends=('git')
 conflicts=('ponymix' 'pulsemix-git')
 provides=('ponymix' 'pulsemix-git')
 replaces=('pulsemix-git')
-source=('git://github.com/falconindy/ponymix.git')
+source=('git+git://github.com/falconindy/ponymix.git')
 sha1sums=('SKIP')
 
 build() {

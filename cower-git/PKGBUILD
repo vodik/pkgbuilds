@@ -2,8 +2,13 @@
 
 pkgname=cower-git
 pkgver=8.8.g5fe1e4e
+pkgver() {
+  cd "cower"
+  git describe | sed 's/^v//;s/-/./g'
+}
 pkgrel=1
 pkgdesc="A simple AUR agent with a pretentious name"
+
 arch=('i686' 'x86_64')
 url="http://github.com/falconindy/cower"
 license=('MIT')
@@ -11,13 +16,8 @@ depends=('curl' 'libarchive' 'pacman' 'yajl' )
 makedepends=('git' 'perl')
 conflicts=('cower')
 provides=('cower')
-source=('git://github.com/falconindy/cower')
+source=('git+git://github.com/falconindy/cower')
 sha1sums=('SKIP')
-
-pkgver() {
-  cd "cower"
-  git describe | sed 's/^v//;s/-/./g'
-}
 
 build() {
   make -C "cower"

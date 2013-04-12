@@ -1,25 +1,25 @@
 # Maintainer: anergy <anergy.25110321@gmail.com>
 
 pkgname=vim-vimproc-git
-pkgver=7.0.84.g4579e6a
-pkgrel=1
-pkgdesc="interactive command execution in vim"
-arch=(i686 x86_64)
-url="https://github.com/Shougo/vimproc"
-license=(MIT)
-groups=(vim-plugins)
-depends=(vim)
-makedepends=(git)
-provides=(vim-vimproc)
-conflicts=(vim-vimproc)
-source=('git://github.com/Shougo/vimproc.git')
-sha1sums=('SKIP')
-install=vimdoc.install
-
+pkgver=7.0.86.ga3fe7ce
 pkgver() {
   cd "vimproc"
   git describe --tags | sed 's/^ver\.//;s/-/./g'
 }
+pkgrel=1
+pkgdesc="interactive command execution in vim"
+
+arch=(i686 x86_64)
+url="https://github.com/Shougo/vimproc"
+license=('MIT')
+groups=('vim-plugins')
+depends=('vim)
+makedepends=('git')
+provides=('vim-vimproc')
+conflicts=('vim-vimproc')
+source=('git+git://github.com/Shougo/vimproc.git')
+sha1sums=('SKIP')
+install=vimdoc.install
 
 build() {
   make -C "vimproc" -f make_unix.mak

@@ -2,8 +2,12 @@
 
 pkgname=python2-powerline-git
 pkgver=20130313
+pkgver() {
+  date +%Y%m%d
+}
 pkgrel=1
 pkgdesc='The ultimate statusline/prompt utility.'
+
 url='https://github.com/Lokaltog/powerline'
 license=('MIT')
 arch=('any')
@@ -12,7 +16,7 @@ makedepends=('git' 'python2-distribute')
 optdepends=('python2-psutil: improved system information'
   'python2-pygit2: improved git support')
 replaces=('powerline-git')
-source=("git://github.com/Lokaltog/powerline.git#branch=develop")
+source=("git+git://github.com/Lokaltog/powerline.git#branch=develop")
 sha1sums=('SKIP')
 install=powerline.install
 

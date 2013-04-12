@@ -2,13 +2,17 @@
 
 pkgname=bitlbee-steam-git
 pkgver=20130307
+pkgver() {
+  date +%Y%m%d
+}
 pkgrel=1
+
 pkgdesc="A bitlbee plugin for the steam message protocol"
 arch=('i686' 'x86_64')
 url='https://github.com/jgeboski/bitlbee-steam'
 license=('GPL')
 depends=('bitlbee')
-source=('git://github.com/jgeboski/bitlbee-steam.git')
+source=('git+git://github.com/jgeboski/bitlbee-steam.git')
 sha1sums=('SKIP')
 
 build() {

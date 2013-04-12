@@ -1,0 +1,48 @@
+# Maintainer: Simon Gomizelj <simongmzlj@gmail.com>
+
+pkgname=fontconfig-git
+pkgver=2.10.92.7.g03216cc
+pkgver() {
+  cd "fontconfig"
+  git describe | sed 's/-/./g'
+}
+pkgrel=1
+pkgdesc="A library for configuring and customizing font access"
+
+arch=(i686 x86_64)
+url="http://www.fontconfig.org/release/"
+license=('custom')
+depends=('expat' 'freetype2')
+options=('!libtool')
+conflicts=('fontconfig')
+provides=('fontconfig')
+install=fontconfig.install
+source=('git+git://anongit.freedesktop.org/fontconfig')
+md5sums=('SKIP')
+
+build() {
+  cd "fontconfig"
+
+  # make sure there's no rpath trouble and sane .so versioning - FC and Gentoo do this as well
+  ./autogen.sh
+  libtoolize -f
+  autoreconf -fi
+
+  ./configure --prefix=/usr \
+              --sysconfdir=/etc \
+              --with-templatedir=/etc/fonts/conf.avail \
+              --with-xmldir=/etc/fonts \
+              --localstatedir=/var \
+              --disable-static \
+              --with-default-fonts=/usr/share/fonts \
+              --with-add-fonts=/usr/share/fonts
+  make
+}
+
+package() {
+  make -C "fontconfig" DESTDIR="$pkgdir" install
+
+  # Install license
+  install -m755 -d "$pkgdir/usr/share/licenses/$pkgname"
+  install -m644 "fontconfig/COPYING" "$pkgdir/usr/share/licenses/$pkgname"
+}
