@@ -2,8 +2,13 @@
 
 pkgname=termite-git
 pkgver=6.8.g46ad894
+pkgver() {
+  cd "termite"
+  git describe | sed 's/^v//;s/-/./g'
+}
 pkgrel=1
 pkgdesc="A simple VTE-based terminal"
+
 arch=('i686' 'x86_64')
 url="https://github.com/thestinger/termite/"
 license=('LGPL')
@@ -12,14 +17,9 @@ makedepends=('git')
 provides=('termite')
 conflicts=('termite')
 backup=('etc/xdg/termite/config')
-install='termite-git.install'
-source=('git://github.com/thestinger/termite.git')
+install=termite-git.install
+source=('git+git://github.com/thestinger/termite.git')
 sha1sums=('SKIP')
-
-pkgver() {
-  cd "termite"
-  git describe | sed 's/^v//;s/-/./g'
-}
 
 build() {
   cd "termite"

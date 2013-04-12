@@ -2,8 +2,13 @@
 
 pkgname=kmscon-git
 pkgver=7.42.g4e0b981
+pkgver() {
+  cd "kmscon"
+  git describe | sed 's/^kmscon-//;s/-/./g'
+}
 pkgrel=1
 pkgdesc='Terminal emulator based on Kernel Mode Setting (KMS)'
+
 arch=('i686' 'x86_64')
 url='https://github.com/dvdhrm/kmscon'
 license=('MIT')
@@ -12,13 +17,8 @@ makedepends=('git' 'libxslt' 'docbook-xsl' 'linux-api-headers')
 options=('!libtool')
 provides=('kmscon')
 conflicts=('kmscon')
-source=('git://github.com/dvdhrm/kmscon.git')
+source=('git+git://github.com/dvdhrm/kmscon.git')
 sha1sums=('SKIP')
-
-pkgver() {
-  cd "kmscon"
-  git describe | sed 's/^kmscon-//;s/-/./g'
-}
 
 build() {
   cd "kmscon"

@@ -1,5 +1,5 @@
 pkgname=vim-hg
-pkgver=7.3.875.1.acf7368a2acc
+pkgver=7.3.888.2.9b772e48f79e
 _vimver="${pkgver:0:3}"
 pkgrel=1
 pkgdesc='Vi Improved, a highly configurable, improved version of the vi text editor'
@@ -26,16 +26,16 @@ pkgver() {
     sed 's/^v//;s/-/./g'
 }
 
-build() {
-  cd "vim"
+prepare() {
+  cd "vim/src"
 
   # define the place for the global (g)vimrc file (set to /etc/vimrc)
-  sed -i 's|^.*\(#define SYS_.*VIMRC_FILE.*"\) .*$|\1|' \
-    src/feature.h
-  sed -i 's|^.*\(#define VIMRC_FILE.*"\) .*$|\1|' \
-    src/feature.h
+  sed -i 's|^.*\(#define SYS_.*VIMRC_FILE.*"\) .*$|\1|' feature.h
+  sed -i 's|^.*\(#define VIMRC_FILE.*"\) .*$|\1|' feature.h
+}
 
-  cd "src"
+build() {
+  cd "vim/src"
 
   autoconf
   ./configure \
@@ -62,7 +62,7 @@ build() {
 package() {
   make -C "vim" VIMRCLOC="/etc" DESTDIR="$pkgdir" install
 
-  _vimver="vim${_vimver/./}"
+  local _vimver="vim${_vimver/./}"
 
   # provided by (n)vi in core
   rm "$pkgdir/usr/bin/ex"

@@ -1,9 +1,14 @@
 # Maintainer: Dave Reisner <dreisner@archlinux.org>
 
 pkgname=systemd-git
-pkgver=200.78.gae7a718
+pkgver=200.156.gd4b7fec
+pkgver() {
+  cd "systemd"
+  git describe | sed 's/^v//;s/-/./g'
+}
 pkgrel=1
 pkgdesc='system and service manager'
+
 arch=('i686' 'x86_64')
 url="http://www.freedesktop.org/wiki/Software/systemd"
 license=('GPL2' 'LGPL2.1' 'MIT')
@@ -18,18 +23,18 @@ conflicts=('systemd' 'libsystemd' 'nss-myhostname' 'systemd-sysvcompat' 'systemd
 replaces=('nss-myhostname')
 groups=('systemd')
 options=('!libtool')
-backup=(etc/dbus-1/system.d/org.freedesktop.systemd1.conf
-        etc/dbus-1/system.d/org.freedesktop.hostname1.conf
-        etc/dbus-1/system.d/org.freedesktop.login1.conf
-        etc/dbus-1/system.d/org.freedesktop.locale1.conf
-        etc/dbus-1/system.d/org.freedesktop.timedate1.conf
-        etc/systemd/system.conf
-        etc/systemd/user.conf
-        etc/systemd/logind.conf
-        etc/systemd/journald.conf
-        etc/udev/udev.conf)
-install='systemd.install'
-source=('git://anongit.freedesktop.org/systemd/systemd.git'
+backup=('etc/dbus-1/system.d/org.freedesktop.systemd1.conf'
+        'etc/dbus-1/system.d/org.freedesktop.hostname1.conf'
+        'etc/dbus-1/system.d/org.freedesktop.login1.conf'
+        'etc/dbus-1/system.d/org.freedesktop.locale1.conf'
+        'etc/dbus-1/system.d/org.freedesktop.timedate1.conf'
+        'etc/systemd/system.conf'
+        'etc/systemd/user.conf'
+        'etc/systemd/logind.conf'
+        'etc/systemd/journald.conf'
+        'etc/udev/udev.conf')
+install=systemd.install
+source=('git+git://anongit.freedesktop.org/systemd/systemd.git'
         'use-split-usr-path.patch'
         'initcpio-hook-udev'
         'initcpio-install-udev'
@@ -39,11 +44,6 @@ md5sums=('SKIP'
          'e99e9189aa2f6084ac28b8ddf605aeb8'
          'fb37e34ea006c79be1c54cbb0f803414'
          'df69615503ad293c9ddf9d8b7755282d')
-
-pkgver() {
-  cd "systemd"
-  git describe | sed 's/^v//;s/-/./g'
-}
 
 build() {
   cd "systemd"

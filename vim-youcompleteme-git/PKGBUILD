@@ -2,18 +2,22 @@
 
 pkgname=vim-youcompleteme-git
 pkgver=20130222
+pkgver() {
+  date +%Y%m%d
+}
 pkgrel=1
 pkgdesc='A code-completion engine for Vim'
+
 arch=(i686 x86_64)
 url='http://valloric.github.com/YouCompleteMe/'
-license=(GPL3)
-groups=(vim-plugins)
-depends=(vim clang python)
-makedepends=(git cmake)
-provides=(vim-youcompleteme)
-conflicts=(vim-youcompleteme)
-source=('git://github.com/vodik/YouCompleteMe.git#branch=python3'
-        'git://github.com/davidhalter/jedi.git')
+license=('GPL3')
+groups=('vim-plugins')
+depends=('vim' 'clang' 'python')
+makedepends=('git' 'cmake)
+provides=('vim-youcompleteme')
+conflicts=('vim-youcompleteme')
+source=('git+git://github.com/vodik/YouCompleteMe.git#branch=python3'
+        'git+git://github.com/davidhalter/jedi.git')
 sha1sums=('SKIP' 'SKIP')
 install=vimdoc.install
 
