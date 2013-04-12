@@ -13,7 +13,7 @@ url='http://valloric.github.com/YouCompleteMe/'
 license=('GPL3')
 groups=('vim-plugins')
 depends=('vim' 'clang' 'python')
-makedepends=('git' 'cmake)
+makedepends=('git' 'cmake')
 provides=('vim-youcompleteme')
 conflicts=('vim-youcompleteme')
 source=('git+git://github.com/vodik/YouCompleteMe.git#branch=python3'
