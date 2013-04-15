@@ -1,0 +1,34 @@
+# Maintainer: OK100 <ok100 at lavabit dot com>
+# Previous Maintainer: Valère Monseur <valere dot monseur at ymail dot com>
+
+pkgname=compton-git
+pkgver=20130415
+pkgver() {
+  cd "compton"
+  date -u +%Y%m%d
+}
+pkgrel=1
+pkgdesc="X Compositor (a fork of xcompmgr-dana)"
+
+arch=('i686' 'x86_64')
+url='https://github.com/chjj/compton'
+license=('MIT')
+depends=('libgl' 'dbus' 'libxcomposite' 'libxdamage' 'libxrandr' 'pcre' 'libconfig')
+makedepends=('git' 'make' 'pkg-config' 'asciidoc' 'libgl')
+source=('git+git://github.com/chjj/compton.git')
+md5sums=('SKIP')
+
+build() {
+  make -C "compton"
+  make -C "compton" docs
+}
+
+package() {
+  make -C "compton" DESTDIR="$pkgdir" install
+
+  # install license
+  install -D -m644 "compton/LICENSE" "$pkgdir/usr/share/licenses/compton/LICENSE"
+
+  # example conf
+  install -D -m644 "compton/compton.sample.conf" "$pkgdir/etc/xdg/compton.conf.example"
+}
