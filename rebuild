@@ -1,5 +1,8 @@
 #!/bin/bash
 
+export CC=gcc
+export CXX=g++
+
 FLAGS="$*"
 
 ALL_OFF="$(tput sgr0)"
@@ -72,16 +75,17 @@ get_filename() {
 	printf "%s\n" "${filename}"
 }
 
-update_repo() {
+update_git_mirror() {
 	git fetch >/dev/null
 	git rev-list HEAD...origin/$1 --count
 }
 
-show_log() {
+show_git_log() {
 	git log --oneline --decorate --graph origin/$1
 }
 
-update_hg_repo() {
+# XXX: incorrent hg instructions
+update_hg_mirror() {
 	hg pull >/dev/null
 	commits=$(hg summary --remote | grep "update:" | wc -l | sed -e 's/^ *//')
 	echo $((commits - 1))
@@ -107,11 +111,11 @@ update() {
 		fi
 
 		(cd "$package/$repo" && git fetch --all >/dev/null)
-		local commits=$(cd "$package/src/$repo" && update_repo $branch)
+		local commits=$(cd "$package/src/$repo" && update_git_mirror $branch)
 
 		if (( commits > 0 )); then
 			msg2 "$package is $commits commits behind origin/$branch"
-			confirm "View git log?"    && (cd "$package/src/$repo" && show_log $branch)
+			confirm "View git log?"    && (cd "$package/src/$repo" && show_git_log $branch)
 			confirm "Rebuild package?" && (cd "$package" && makepkg $FLAGS)
 		fi
 		;;
@@ -125,7 +129,7 @@ update() {
 		# fi
 
 		(cd "$package/$repo" && hg pull >/dev/null)
-		local commits=$(cd "$package/src/$repo" && update_hg_repo $branch)
+		local commits=$(cd "$package/src/$repo" && update_hg_mirror $branch)
 
 		if (( commits > 0 )); then
 			msg2 "$package is $commits commits behind origin/$branch"
@@ -158,3 +162,6 @@ else
 		check_updates "$dir"
 	done
 fi
+
+[[ -f "$HOME/.makepkg.conf" ]] && source "$HOME/.makepkg.conf"
+[[ -d "$PKGDEST" ]] && (cd "$PKGDEST" && repoman -U --sign vodik.db .)
