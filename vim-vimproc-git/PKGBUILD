@@ -1,7 +1,7 @@
 # Maintainer: anergy <anergy.25110321@gmail.com>
 
 pkgname=vim-vimproc-git
-pkgver=7.0.86.ga3fe7ce
+pkgver=7.0.101.g9d84e5a
 pkgver() {
   cd "vimproc"
   git describe --tags | sed 's/^ver\.//;s/-/./g'

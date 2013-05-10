@@ -1,7 +1,7 @@
 # Maintainer: Simon Gomizelj <simongmzlj@gmail.com>
 
 pkgname=lightd-git
-pkgver=0.0.1.63.g5167d3b
+pkgver=0.0.1.72.g03732f5
 pkgver() {
   cd "lightd"
   git describe | sed 's/^v//;s/-/./g'

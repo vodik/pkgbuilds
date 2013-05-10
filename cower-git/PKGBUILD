@@ -1,7 +1,7 @@
 # Maintainer: Dave Reisner <d@falconindy.com>
 
 pkgname=cower-git
-pkgver=8.8.g5fe1e4e
+pkgver=9.7.ga7ebb5d
 pkgver() {
   cd "cower"
   git describe | sed 's/^v//;s/-/./g'

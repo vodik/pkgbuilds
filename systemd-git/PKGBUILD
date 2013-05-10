@@ -1,7 +1,7 @@
 # Maintainer: Dave Reisner <dreisner@archlinux.org>
 
 pkgname=systemd-git
-pkgver=200.156.gd4b7fec
+pkgver=204.13.g72455f9
 pkgver() {
   cd "systemd"
   git describe | sed 's/^v//;s/-/./g'

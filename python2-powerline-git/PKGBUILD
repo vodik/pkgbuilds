@@ -1,7 +1,7 @@
 # Maintainer: Kim Silkebækken <kim.silkebaekken+aur@gmail.com>
 
 pkgname=python2-powerline-git
-pkgver=20130313
+pkgver=20130506
 pkgver() {
   date +%Y%m%d
 }
