@@ -164,4 +164,4 @@ else
 fi
 
 [[ -f "$HOME/.makepkg.conf" ]] && source "$HOME/.makepkg.conf"
-[[ -d "$PKGDEST" ]] && (cd "$PKGDEST" && repoman -U --sign vodik.db .)
+[[ -d "$PKGDEST" ]] && (cd "$PKGDEST" && repoman -Ucs vodik.db .)
