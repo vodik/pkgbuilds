@@ -1,7 +1,7 @@
 # Maintainer: Scott Sinclair <scott@nullis.net>
 
 pkgname=bitlbee-steam-git
-pkgver=164.fb8a201
+pkgver=167.48e23a1
 pkgver() {
   cd "bitlbee-steam"
   echo $(git rev-list --count master).$(git rev-parse --short master)

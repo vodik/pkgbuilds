@@ -2,7 +2,7 @@
 # Previous Maintainer: Valère Monseur <valere dot monseur at ymail dot com>
 
 pkgname=compton-git
-pkgver=20130505
+pkgver=20130511
 pkgver() {
   cd "compton"
   date -u +%Y%m%d
