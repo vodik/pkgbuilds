@@ -163,5 +163,6 @@ else
 	done
 fi
 
+msg "Updating vodik.db"
 [[ -f "$HOME/.makepkg.conf" ]] && source "$HOME/.makepkg.conf"
-[[ -d "$PKGDEST" ]] && (cd "$PKGDEST" && repoman -Ucs vodik.db .)
+[[ -d "$PKGDEST" ]] && repoman -Ucs "$PKGDEST/vodik.db"
