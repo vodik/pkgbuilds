@@ -1,8 +1,5 @@
 #!/bin/bash
 
-export CC=gcc
-export CXX=g++
-
 FLAGS="$*"
 
 ALL_OFF="$(tput sgr0)"
@@ -163,6 +160,6 @@ else
 	done
 fi
 
-msg "Updating vodik.db"
+msg "Updating vodik.db..."
 [[ -f "$HOME/.makepkg.conf" ]] && source "$HOME/.makepkg.conf"
 [[ -d "$PKGDEST" ]] && repoman -Ucs "$PKGDEST/vodik.db"
