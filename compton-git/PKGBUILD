@@ -2,10 +2,10 @@
 # Previous Maintainer: Valère Monseur <valere dot monseur at ymail dot com>
 
 pkgname=compton-git
-pkgver=20130511
+pkgver=2013.05.16.g1b34dc3
 pkgver() {
   cd "compton"
-  date -u +%Y%m%d
+  git log -1 --format="%cd.%h" --date=short | sed 's/-/./g'
 }
 pkgrel=1
 pkgdesc="X Compositor (a fork of xcompmgr-dana)"
