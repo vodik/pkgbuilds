@@ -1,7 +1,7 @@
 # Maintainer: Simon Gomizelj <simongmzlj@gmail.com>
 
 pkgname=fontconfig-git
-pkgver=2.10.92.10.g0f9aa87
+pkgver=2.10.92.11.g1cad82c
 pkgver() {
   cd "fontconfig"
   git describe | sed 's/-/./g'
