@@ -38,5 +38,5 @@ package() {
   ln -sf /usr/lib/llvm/libclang.so "$pkgdir/usr/share/vim/vimfiles/python/"
 
   cd "$srcdir/jedi"
-  cp -a jedi "$pkgdir/usr/share/vim/vimfiles/python/completers/python/jedi/"
+  cp -a jedi "$pkgdir/usr/share/vim/vimfiles/python/ycm/completers/python/jedi/"
 }
