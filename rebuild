@@ -162,4 +162,4 @@ fi
 
 msg "Updating vodik.db..."
 [[ -f "$HOME/.makepkg.conf" ]] && source "$HOME/.makepkg.conf"
-[[ -d "$PKGDEST" ]] && repoman -Ucs "$PKGDEST/vodik.db"
+[[ -d "$PKGDEST" ]] && repose -Ucsf "$PKGDEST/vodik.db"
