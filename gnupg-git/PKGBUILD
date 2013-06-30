@@ -1,0 +1,54 @@
+# GnuPG2 GIT version
+# Contributor: alphazo@gmail.com
+# Based on official package maintained by Tobias Powalowski <tpowa@archlinux.org>
+# Fixes from @nullren
+
+pkgname=gnupg-git
+pkgver=2.1.0beta3.220.g82c25e6
+pkgver() {
+  cd "gnupg"
+  git describe | sed 's/^gnupg-//;s/-/./g'
+}
+pkgrel=1
+pkgdesc="GNU Privacy Guard 2 - a PGP replacement tool. Development version. Do not use in production environments. Test new ECC algorithm by using --expert with --gen-key"
+
+arch=('i686' 'x86_64')
+depends=('libldap' 'curl' 'bzip2' 'zlib' 'libksba>=1.2' 'libgpg-error>=1.1' 'libgcrypt>=1.5'
+         'pth' 'libusb-compat' 'libassuan-git' 'npth-git' 'texinfo' 'readline' 'pinentry')
+license=('GPL')
+url="http://www.gnupg.org/"
+makedepends=('git' 'ghostscript' 'transfig' 'automake')
+provides=("gnupg=${pkgver}" 'dirmngr')
+conflicts=('gnupg2' 'gnupg' 'dirmngr')
+install=$pkgname.install
+source=("git://git.gnupg.org/gnupg.git")
+sha1sums=('SKIP')
+
+build() {
+  cd "gnupg"
+
+  sed -i 's/AM_CONFIG_HEADER/AC_CONFIG_HEADERS/g' configure.ac
+  sed -i 's/AM_PROG_MKDIR_P/AC_PROG_MKDIR_P/g' configure.ac
+  sed -i 's/\$\(mkdir_p\)/\$\(MKDIR_P\)/g' Makefile.am
+  autoreconf -fiv
+
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib/gnupg \
+    --sbindir=/usr/bin \
+    --enable-maintainer-mode \
+    --enable-symcryptrun \
+    --enable-gpgtar
+
+  make
+}
+
+# check() {
+#   make -C "gnupg" check
+# }
+
+package() {
+  make -C "gnupg" DESTDIR="$pkgdir" install
+  ln -s gpg2 "$pkgdir/usr/bin/gpg"
+}
