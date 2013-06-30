@@ -1,7 +1,7 @@
 # Maintainer: Dave Reisner <dreisner@archlinux.org>
 
 pkgname=systemd-git
-pkgver=204.62.g12f25b6
+pkgver=204.223.g1e158d2
 pkgver() {
   cd "systemd"
   git describe | sed 's/^v//;s/-/./g'
@@ -76,7 +76,7 @@ package() {
   for tool in runlevel reboot shutdown poweroff halt telinit; do
     ln -s '/usr/bin/systemctl' "$pkgdir/sbin/$tool"
   done
-  ln -s '../usr/lib/systemd/systemd' "$pkgdir/sbin/init"
+  ln -s '../lib/systemd/systemd' "$pkgdir/sbin/init"
 
   # fix .so links in manpage stubs
   find "$pkgdir/usr/share/man" -type f -name '*.[[:digit:]]' \
