@@ -4,7 +4,7 @@
 # Contributor: Andres Perera <aepd87@gmail.com>
 
 pkgname=pacman-git
-pkgver=4.1.1.9.g0f988be
+pkgver=4.1.2.53.gdcb3b9f
 pkgver() {
   cd pacman
   git describe | sed 's/^v//;s/-/./g'

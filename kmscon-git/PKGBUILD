@@ -1,7 +1,7 @@
 # Maintainer: Daniel Micay <danielmicay@gmail.com>
 
 pkgname=kmscon-git
-pkgver=7.42.g4e0b981
+pkgver=7.46.g4962213
 pkgver() {
   cd "kmscon"
   git describe | sed 's/^kmscon-//;s/-/./g'

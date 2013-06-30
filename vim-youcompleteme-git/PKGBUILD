@@ -1,7 +1,7 @@
 # Maintainer: Daniel Micay <danielmicay@gmail.com>
 
 pkgname=vim-youcompleteme-git
-pkgver=603.3903017
+pkgver=652.30fd567
 pkgver() {
   cd "YouCompleteMe"
   echo $(git rev-list --count makepkg).$(git rev-parse --short makepkg)

@@ -1,5 +1,5 @@
 pkgname=vim-hg
-pkgver=7.3.973.1.0917206e7317
+pkgver=7.3.1278.1.1ad9383d56d5
 _vimver="${pkgver:0:3}"
 pkgrel=1
 pkgdesc='Vi Improved, a highly configurable, improved version of the vi text editor'
