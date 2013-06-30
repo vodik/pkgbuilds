@@ -1,7 +1,7 @@
 # Maintainer: Simon Gomizelj <simongmzlj@gmail.com>
 
 pkgname=envoy-git
-pkgver=1.1.1.g836d0d8
+pkgver=3.7.g7725b48
 pkgver() {
   cd "envoy"
   git describe | sed 's/^v//;s/-/./g'
@@ -17,11 +17,19 @@ optdepends=('gnupg: gpg-agent support')
 makedepends=('git')
 conflicts=('envoy')
 provides=('envoy')
-source=('git+git://github.com/vodik/envoy.git')
-sha1sums=('SKIP')
+source=('git+git://github.com/vodik/envoy.git'
+        'git+git://github.com/vodik/clique.git')
+sha1sums=('SKIP' 'SKIP')
 
 build() {
-  make -C "envoy"
+  cd "envoy"
+
+  # workaround for submodules
+  git submodule init
+  git config submodule.qux/clique.url "$srcdir/clique"
+  git submodule update
+
+  make
 }
 
 package() {
