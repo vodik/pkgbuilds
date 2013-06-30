@@ -1,0 +1,37 @@
+# $Id: PKGBUILD 146745 2012-01-16 22:52:52Z dreisner $
+# Maintainer: Tobias Powalowski <tpowa@archlinux.org>
+
+pkgname=npth-git
+pkgver=0.91.5.g9575449
+pkgver() {
+  cd "npth"
+  git describe | sed 's/^npth-//;s/-/./g'
+}
+pkgrel=1
+pkgdesc="A library to provide the GNU Pth API and thus a non-preemptive threads implementationA IPC library used by some GnuPG related software (git version)."
+
+arch=('i686' 'x86_64')
+license=('GPL')
+url="http://www.gnupg.org/related_software/"
+depends=('libgpg-error')
+makedepends=('git')
+options=('!libtool')
+conflicts=('npth')
+provides=('npth')
+source=('git+git://git.gnupg.org/npth.git')
+sha1sums=('SKIP')
+
+build() {
+  cd "npth"
+   autoreconf -fiv
+   ./configure --prefix=/usr
+   make
+}
+
+check() {
+  make -C "npth" check
+}
+
+package() {
+  make -C "npth" DESTDIR="$pkgdir" install
+}
