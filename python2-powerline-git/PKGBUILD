@@ -1,10 +1,10 @@
 # Maintainer: Kim Silkebækken <kim.silkebaekken+aur@gmail.com>
 
 pkgname=python2-powerline-git
-pkgver=2013.05.15.ge3ed3ab
+pkgver=800.c1ae7f3
 pkgver() {
   cd "powerline"
-  git log -1 --format="%cd.%h" --date=short | sed 's/-/./g'
+  echo $(git rev-list --count makepkg).$(git rev-parse --short makepkg)
 }
 pkgrel=1
 pkgdesc='The ultimate statusline/prompt utility.'
