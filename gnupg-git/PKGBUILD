@@ -21,8 +21,15 @@ makedepends=('git' 'ghostscript' 'transfig' 'automake')
 provides=("gnupg=${pkgver}" 'dirmngr')
 conflicts=('gnupg2' 'gnupg' 'dirmngr')
 install=$pkgname.install
-source=("git://git.gnupg.org/gnupg.git")
-sha1sums=('SKIP')
+source=("git://git.gnupg.org/gnupg.git"
+        "protect-tool-env.patch")
+sha1sums=('SKIP'
+          'd7d05be4cbd117811542c00b5ede06d79067b76a')
+
+prepare() {
+  cd "gnupg"
+  patch -p1 -i ../protect-tool-env.patch # FS#31900
+}
 
 build() {
   cd "gnupg"
@@ -35,8 +42,8 @@ build() {
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
-    --libexecdir=/usr/lib/gnupg \
     --sbindir=/usr/bin \
+    --libexecdir=/usr/lib/gnupg \
     --enable-maintainer-mode \
     --enable-symcryptrun \
     --enable-gpgtar
@@ -50,5 +57,8 @@ build() {
 
 package() {
   make -C "gnupg" DESTDIR="$pkgdir" install
-  ln -s gpg2 "$pkgdir/usr/bin/gpg"
+  ln -s gpg2 "${pkgdir}"/usr/bin/gpg
+  ln -s gpgv2 "${pkgdir}"/usr/bin/gpgv
+  ln -s gpg2.1.gz "${pkgdir}"/usr/share/man/man1/gpg.1.gz
+  rm "${pkgdir}/usr/share/gnupg/com-certs.pem" # FS#33059
 }

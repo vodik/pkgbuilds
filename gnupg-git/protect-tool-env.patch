@@ -1,0 +1,29 @@
+diff --git a/agent/protect-tool.c b/agent/protect-tool.c
+index faa0e24..248fd76 100644
+--- a/agent/protect-tool.c
++++ b/agent/protect-tool.c
+@@ -97,6 +97,7 @@ static const char *opt_passphrase;
+ static char *opt_prompt;
+ static int opt_status_msg;
+ static const char *opt_agent_program;
++static session_env_t opt_session_env;
+ 
+ static char *get_passphrase (int promptno);
+ static void release_passphrase (char *pw);
+@@ -569,6 +570,7 @@ main (int argc, char **argv )
+ 
+   opt_homedir = default_homedir ();
+ 
++  opt_session_env = session_env_new ();
+ 
+   pargs.argc = &argc;
+   pargs.argv = &argv;
+@@ -616,7 +618,7 @@ main (int argc, char **argv )
+                                 opt.verbose,
+                                 opt_homedir,
+                                 opt_agent_program,
+-                                NULL, NULL, NULL);
++                                NULL, NULL, opt_session_env);
+ 
+   if (opt_prompt)
+     opt_prompt = percent_plus_unescape (opt_prompt, 0);
