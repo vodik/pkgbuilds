@@ -21,19 +21,20 @@ install=termite-git.install
 source=('git+git://github.com/thestinger/termite.git')
 sha1sums=('SKIP')
 
-build() {
+prepare() {
   cd "termite"
 
   # workaround for submodules
   git submodule init
   git config submodule.qux/util.url "$srcdir/termite-module-util"
   git submodule update
+}
 
-  make
+build() {
+  make -C "termite"
 }
 
 package() {
-  cd "termite"
-  make PREFIX="/usr" DESTDIR="$pkgdir" install
-  install -Dm644 config "$pkgdir/etc/xdg/termite/config"
+  make -C "termite" PREFIX="/usr" DESTDIR="$pkgdir" install
+  install -Dm644 termite/config "$pkgdir/etc/xdg/termite/config"
 }
