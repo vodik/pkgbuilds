@@ -1,7 +1,7 @@
 # Maintainer: Dave Reisner <dreisner@archlinux.org>
 
 pkgname=systemd-git
-pkgver=204.223.g1e158d2
+pkgver=204.234.gd28e923
 pkgver() {
   cd "systemd"
   git describe | sed 's/^v//;s/-/./g'
@@ -33,7 +33,7 @@ backup=('etc/dbus-1/system.d/org.freedesktop.systemd1.conf'
         'etc/systemd/logind.conf'
         'etc/systemd/journald.conf'
         'etc/udev/udev.conf')
-install=systemd.install
+install=install
 source=('git+git://anongit.freedesktop.org/systemd/systemd.git'
         'use-split-usr-path.patch'
         'initcpio-hook-udev'

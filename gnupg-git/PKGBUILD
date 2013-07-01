@@ -20,7 +20,7 @@ url="http://www.gnupg.org/"
 makedepends=('git' 'ghostscript' 'transfig' 'automake')
 provides=("gnupg=${pkgver}" 'dirmngr')
 conflicts=('gnupg2' 'gnupg' 'dirmngr')
-install=$pkgname.install
+install=install
 source=("git://git.gnupg.org/gnupg.git"
         "protect-tool-env.patch")
 sha1sums=('SKIP'

@@ -20,7 +20,7 @@ conflicts=('vim-youcompleteme')
 source=('git+git://github.com/vodik/YouCompleteMe.git#branch=python3'
         'git+git://github.com/davidhalter/jedi.git')
 sha1sums=('SKIP' 'SKIP')
-install=vimdoc.install
+install=install
 
 build() {
   cd "YouCompleteMe/cpp"

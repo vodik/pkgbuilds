@@ -19,7 +19,7 @@ makedepends=('git')
 options=('!libtool')
 provides=('libassuan')
 conflicts=('libassuan')
-install=libassuan.install
+install=install
 source=('git+git://git.gnupg.org/libassuan.git')
 sha1sums=('SKIP')
 

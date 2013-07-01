@@ -2,7 +2,7 @@
 # Based on the mplayer2-lite-git PKGBUILD
 
 pkgname=mpv-git
-pkgver=35384.2396e62
+pkgver=35385.931ee2d
 pkgver() {
   cd "mpv"
   echo $(git rev-list --count master).$(git rev-parse --short master)

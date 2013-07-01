@@ -16,7 +16,7 @@ depends=('expat' 'freetype2')
 options=('!libtool')
 conflicts=('fontconfig')
 provides=('fontconfig')
-install=fontconfig.install
+install=install
 source=('git+git://anongit.freedesktop.org/fontconfig')
 md5sums=('SKIP')
 

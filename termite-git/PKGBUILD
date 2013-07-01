@@ -17,7 +17,6 @@ makedepends=('git')
 provides=('termite')
 conflicts=('termite')
 backup=('etc/xdg/termite/config')
-install=termite-git.install
 source=('git+git://github.com/thestinger/termite.git')
 sha1sums=('SKIP')
 
