@@ -17,9 +17,9 @@ depends=('vim')
 makedepends=('git')
 provides=('vim-vimproc')
 conflicts=('vim-vimproc')
+install=install
 source=('git+git://github.com/Shougo/vimproc.git')
 sha1sums=('SKIP')
-install=install
 
 build() {
   make -C "vimproc" -f make_unix.mak

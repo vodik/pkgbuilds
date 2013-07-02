@@ -2,7 +2,7 @@
 # Based on the mplayer2-lite-git PKGBUILD
 
 pkgname=mpv-git
-pkgver=35385.931ee2d
+pkgver=35394.37c5867
 pkgver() {
   cd "mpv"
   echo $(git rev-list --count master).$(git rev-parse --short master)
@@ -17,7 +17,7 @@ depends=('libcaca' 'portaudio' 'ffmpeg' 'lcms2' 'libdvdread' 'smbclient' 'libmng
 makedepends=('git' 'mesa' 'python-docutils')
 provides=('mpv')
 conflicts=('mpv')
-install=mpv.install
+install=install
 source=('git+http://github.com/mpv-player/mpv#branch=master'
         'mpv.desktop')
 md5sums=('SKIP'
