@@ -81,17 +81,6 @@ show_git_log() {
 	git log --oneline --decorate --graph origin/$1
 }
 
-# XXX: incorrent hg instructions
-update_hg_mirror() {
-	hg pull >/dev/null
-	commits=$(hg summary --remote | grep "update:" | wc -l | sed -e 's/^ *//')
-	echo $((commits - 1))
-}
-
-show_hg_log() {
-	hg log | less
-}
-
 update() {
 	local package="$1"
 	local netfile="$2"
@@ -113,25 +102,7 @@ update() {
 		if (( commits > 0 )); then
 			msg2 "$package is $commits commits behind origin/$branch"
 			confirm "View git log?"    && (cd "$package/src/$repo" && show_git_log $branch)
-			confirm "Rebuild package?" && (cd "$package" && makepkg $FLAGS)
-		fi
-		;;
-	hg*)
-		local repo=$(get_filename "$netfile")
-		# local fragment=${netfile#*#}
-		# local branch="master"
-
-		# if [[ "$fragment" != "$netfile" && ${fragment%%=*} == "branch" ]]; then
-		# 	branch=${fragment##*=}
-		# fi
-
-		(cd "$package/$repo" && hg pull >/dev/null)
-		local commits=$(cd "$package/src/$repo" && update_hg_mirror $branch)
-
-		if (( commits > 0 )); then
-			msg2 "$package is $commits commits behind origin/$branch"
-			confirm "View git log?"    && (cd "$package/src/$repo" && show_hg_log $branch)
-			confirm "Rebuild package?" && (cd "$package" && makepkg $FLAGS)
+      confirm "Rebuild package?" && (cd "$package" && envoy-exec makepkg -s $FLAGS; notify-send "Built $package")
 		fi
 		;;
 	esac
@@ -162,4 +133,7 @@ fi
 
 msg "Updating vodik.db..."
 [[ -f "$HOME/.makepkg.conf" ]] && source "$HOME/.makepkg.conf"
-[[ -d "$PKGDEST" ]] && repose -Ucsf "$PKGDEST/vodik.db"
+[[ -d "$PKGDEST" ]] && envoy-exec repose -f "$PKGDEST/vodik.db"
+
+find -L . -maxdepth 2 -type l -delete
+notify-send "Rebuild complete"
