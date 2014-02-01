@@ -101,8 +101,12 @@ update() {
 
 		if (( commits > 0 )); then
 			msg2 "$package is $commits commits behind origin/$branch"
-			confirm "View git log?"    && (cd "$package/src/$repo" && show_git_log $branch)
-      confirm "Rebuild package?" && (cd "$package" && envoy-exec makepkg -s $FLAGS; notify-send "Built $package")
+
+			confirm "View git log?" && \
+				(cd "$package/src/$repo" && show_git_log $branch)
+
+			confirm "Rebuild package?" && \
+				(cd "$package" && envoy-exec makepkg -s $FLAGS; notify-send "Built $package")
 		fi
 		;;
 	esac
